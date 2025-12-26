@@ -1,0 +1,22 @@
+{
+  "scriptId": "1cf4JtiqsNFQ_x0pGgDGLE7IX0p3s0uAceESCmQUsPL6roAfXmp3oMsFj",
+  "rootDir": "",
+  "fileExtension": "js",
+  "filePushOrder": [
+    "main.js",
+    "config/Constants.js",
+    "utils/DateUtils.js",
+    "utils/Logger.js",
+    "services/GoogleSheetsService.js",
+    "services/AppSheetService.js",
+    "services/DateFilterService.js",
+    "services/OrdersFetcher.js",
+    "services/SummaryCalculator.js",
+    "services/SummaryWriter.js",
+    "services/ServiceFactory.js",
+    "services/SummaryOrchestrator.js",
+    "entry-points/SetProps.js",
+    "entry-points/OnEditTrigger.js",
+    "Debug.js"
+  ]
+}
