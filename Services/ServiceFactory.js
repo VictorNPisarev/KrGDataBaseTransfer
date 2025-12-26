@@ -80,6 +80,11 @@ class ServiceFactory
       return new ProductionStatsFetcher(appSheetService);
     }
 
+    static createGoogleSheetsDataWriter() 
+    {
+      return new GoogleSheetsDataWriter(this.createGoogleSheetsService());
+    }
+
     static createSummaryWriter(sheetsService) 
     {
       return new SummaryWriter
