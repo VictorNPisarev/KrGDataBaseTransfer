@@ -5,9 +5,11 @@ class SummaryOrchestrator
     this.sheetsService = ServiceFactory.createGoogleSheetsService();
     this.appSheetService = ServiceFactory.createAppSheetService();
     
-    this.dateFilterService = ServiceFactory.createDateFilterService(this.sheetsService);
-    this.ordersFetcher = ServiceFactory.createOrdersToDoFetcher(this.appSheetService);
-    this.calculator = new SummaryCalculator();
+//    this.dateFilterService = ServiceFactory.createDateFilterService(this.sheetsService);
+      this.todoFetcher = ServiceFactory.createOrdersToDoFetcher(this.appSheetService);
+      this.productFetcher = ServiceFactory.createOrdersInProductFetcher(this.appSheetService);
+      this.statusFetcher = ServiceFactory.createProductionStatusFetcher(this.appSheetService);
+//    this.calculator = new SummaryCalculator();
     this.writer = ServiceFactory.createSummaryWriter(this.sheetsService);
     
     this.logger = new Logger();
@@ -27,7 +29,7 @@ class SummaryOrchestrator
 
       // 2. Получаем заказы
       this.logger.info('Fetching orders from AppSheet...');
-      const orders = await this.ordersFetcher.fetchByDateRange(period);
+      const orders = await this.todoFetcher.fetchByDateRange(period);
       this.logger.info(`Found ${orders.length} orders`);
 
       // 3. Пишем в буфер (опционально, для отладки)

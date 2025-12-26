@@ -1,4 +1,4 @@
-class GoogleSheetsService 
+class GoogleSheetsService
 {
   constructor(spreadsheetId = null) 
   {
