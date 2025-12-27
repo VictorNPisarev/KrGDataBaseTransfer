@@ -28,9 +28,9 @@ class GoogleSheetsDataWriter
       order.winArea,
       order.plateCount,
       order.plateArea,
-      order.isEconom ? 'Да' : 'Нет',
-      order.isClaim ? 'Да' : 'Нет',
-      order.isOnlyPayed ? 'Да' : 'Нет'
+      order.econom ? 'Да' : 'Нет',
+      order.claim ? 'Да' : 'Нет',
+      order.onlyPayed ? 'Да' : 'Нет'
     ]);
 
     return this.sheetsService.writeSheet(sheetName, headers, rows);
@@ -54,9 +54,9 @@ class GoogleSheetsDataWriter
       relation.productionStatusId,
       relation.changeDate,
       relation.comment,
-      relation.hasLumber ? 'Да' : 'Нет',
-      relation.hasGlazingBead ? 'Да' : 'Нет',
-      relation.needsTwoSidePaint ? 'Да' : 'Нет'
+      relation.lumber,
+      relation.glazingBead,
+      relation.twoSidePaint ? 'Да' : 'Нет'
     ]);
 
     return this.sheetsService.writeSheet(sheetName, headers, rows);
@@ -77,7 +77,7 @@ class GoogleSheetsDataWriter
       status.id,
       status.status,
       status.previousWorkPlace,
-      status.isWorkPlace// ? 'Да' : 'Нет'
+      status.isWorkPlace ? 'Да' : 'Нет'
     ]);
 
     return this.sheetsService.writeSheet(sheetName, headers, rows);
@@ -130,6 +130,11 @@ class GoogleSheetsDataWriter
     if (dataCollections.productionStatus) 
     {
       results.productionStatus = this.writeProductionStatus(dataCollections.productionStatus);
+    }
+
+    if (dataCollections.bomFlags) 
+    {
+      results.bomFlags = this.writeBoMFlags(dataCollections.bomFlags);
     }
 
     return results;
