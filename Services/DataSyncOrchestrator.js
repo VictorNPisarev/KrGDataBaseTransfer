@@ -107,7 +107,7 @@ class DataSyncOrchestrator
       results.totalRecords = Object.values(results.tables)
         .reduce((sum, table) => sum + (table.records || 0), 0);
       
-      Logger.log(`Синхронизация завершена. Обработано записей: ${results.totalRecords}`);
+      console.log(`Синхронизация завершена. Обработано записей: ${results.totalRecords}`);
       
       return results;
 

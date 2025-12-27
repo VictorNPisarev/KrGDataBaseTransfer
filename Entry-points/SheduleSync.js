@@ -11,7 +11,7 @@ function setupDailyTrigger()
     .everyDays(1)
     .create();
   
-  Logger.log('✅ Ежедневный триггер установлен на 2:00');
+  console.log('✅ Ежедневный триггер установлен на 2:00');
   
   // Также можно создать триггер на каждый час для тестирования (закомментировать после теста)
   // ScriptApp.newTrigger('scheduledSync')
@@ -30,7 +30,7 @@ function removeExistingTriggers(functionName)
         if (trigger.getHandlerFunction() === functionName) 
         {
         ScriptApp.deleteTrigger(trigger);
-        Logger.log(`Удален существующий триггер для функции ${functionName}`);
+        console.log(`Удален существующий триггер для функции ${functionName}`);
         }
     });
 }
@@ -41,7 +41,7 @@ function scheduledSync()
   
   try 
   {
-    Logger.log(`🔄 Запуск автоматической синхронизации в ${startTime}`);
+    console.log(`🔄 Запуск автоматической синхронизации в ${startTime}`);
     
     // Вызываем вашу существующую функцию синхронизации
     const results = syncAllAppSheetData();  // или transferAllTables() в зависимости от вашей реализации
@@ -52,7 +52,7 @@ function scheduledSync()
     // Логируем результат
     logger.logSyncResult(results, executionTime);
     
-    Logger.log(`✅ Синхронизация завершена за ${executionTime} мс`);
+    console.log(`✅ Синхронизация завершена за ${executionTime} мс`);
     
     // Отправляем уведомление на email (опционально)
     // sendSyncNotification(results, executionTime);
@@ -72,7 +72,7 @@ function scheduledSync()
     // Логируем ошибку
     logger.logError(error, 'Автоматическая синхронизация');
     
-    Logger.log(`❌ Ошибка синхронизации: ${error.toString()}`);
+    console.log(`❌ Ошибка синхронизации: ${error.toString()}`);
     
     // Отправляем уведомление об ошибке
     // sendErrorNotification(error);
