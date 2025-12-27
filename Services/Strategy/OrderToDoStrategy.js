@@ -4,12 +4,12 @@ class OrdersToDoStrategy extends DataMappingStrategy
   {
     return orders.map(order => ({
         id: order[fieldMappings.RowID],
-        orderNumber: order[fieldMappings.OrderNumber],
+        order: order[fieldMappings.OrderNumber],
         readyDate: order[fieldMappings.ReadyDate],
-        winAmount: Number(order[fieldMappings.WinAmount]) || 0,
-        winSqrt: Number(order[fieldMappings.WinSqrt]) || 0,
-        plateAmount: Number(order[fieldMappings.PlateAmount]) || 0,
-        plateSqrt: Number(order[fieldMappings.PlateSqrt]) || 0,
+        winCount: this.parseNumber(order[fieldMappings.WinAmount]),
+        winArea: this.parseNumber(order[fieldMappings.WinSqrt]),
+        plateCount: this.parseNumber(order[fieldMappings.PlateAmount]),
+        plateArea: this.parseNumber(order[fieldMappings.PlateSqrt]),
         econom: this.parseBoolean(order[fieldMappings.Econom]),
         claim: this.parseBoolean(order[fieldMappings.Claim]),
         onlyPayed: this.parseBoolean(order[fieldMappings.OnlyPayed])

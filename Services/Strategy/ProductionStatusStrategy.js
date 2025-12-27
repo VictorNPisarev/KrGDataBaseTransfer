@@ -1,6 +1,6 @@
 class ProductionStatusStrategy extends DataMappingStrategy
 {
-    map(orders, fieldMappings) 
+    map(statuses, fieldMappings) 
     {
         return statuses.map(status => ({
             id: status[fieldMappings.RowID],

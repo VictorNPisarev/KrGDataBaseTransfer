@@ -84,14 +84,4 @@ class ServiceFactory
     {
       return new GoogleSheetsDataWriter(this.createGoogleSheetsService());
     }
-
-    static createSummaryWriter(sheetsService) 
-    {
-      return new SummaryWriter
-      (
-        sheetsService,
-        Constants.SHEET_NAMES.ORDERS_BUFFER,
-        Constants.SHEET_NAMES.SUMMARY
-      );
-    }
 }

@@ -1,8 +1,9 @@
 {
-  "scriptId": "1cf4JtiqsNFQ_x0pGgDGLE7IX0p3s0uAceESCmQUsPL6roAfXmp3oMsFj",
+  "scriptId": "1xOAmXdsGxbYHEAKi7lBC56iRLx5qN3T0GBYm2lg-Eu5UJ538RjPfVa_y",
   "rootDir": "",
   "fileExtension": "js",
   "filePushOrder": [
+    "Debug.js",
     "main.js",
     "config/Constants.js",
     "utils/DateUtils.js",
@@ -15,8 +16,12 @@
     "services/SummaryWriter.js",
     "services/ServiceFactory.js",
     "services/SummaryOrchestrator.js",
+    "services/Strategy/BoMFlagsStrategy.js",
+    "services/Strategy/ProductionStatusStrategy.js",
+    "services/Strategy/OrdersInProductStrategy.js",
+    "services/Strategy/OrderToDoStrategy.js",
+    "services/Strategy/DataMapperStrategy.js",
     "entry-points/SetProps.js",
-    "entry-points/OnEditTrigger.js",
-    "Debug.js"
+    "entry-points/OnEditTrigger.js"
   ]
 }

@@ -17,7 +17,7 @@ class DataMappingStrategy {
    */
   parseBoolean(value) {
     if (value === undefined || value === null || value === '') return false;
-    return String(value).toLowerCase() === 'true';
+    return String(value).toLowerCase() === 'y' || String(value).toLowerCase() === 'v';
   }
 
   /**

@@ -2,8 +2,10 @@
 /**
  * Оркестратор для полной синхронизации данных
  */
-class DataSyncOrchestrator {
-  constructor() {
+class DataSyncOrchestrator 
+{
+  constructor() 
+  {
     this.appSheetService = ServiceFactory.createAppSheetService();
     this.writer = ServiceFactory.createGoogleSheetsDataWriter();
   }
@@ -11,7 +13,8 @@ class DataSyncOrchestrator {
   /**
    * Полная синхронизация всех таблиц
    */
-  async syncAllTables() {
+  async syncAllTables() 
+  {
     console.log('🔄 Начало полной синхронизации данных AppSheet → Google Sheets');
     
     const results = {
@@ -20,7 +23,8 @@ class DataSyncOrchestrator {
       errors: []
     };
 
-    try {
+    try 
+    {
       // 1. Получаем фетчеры
       const todoFetcher = ServiceFactory.createOrdersToDoFetcher(this.appSheetService);
       const productFetcher = ServiceFactory.createOrdersInProductFetcher(this.appSheetService);
@@ -90,34 +94,43 @@ class DataSyncOrchestrator {
   /**
    * Синхронизация одной таблицы
    */
-  async syncTable(tableName, period = null) {
-    const fetchers = {
+  async syncTable(tableName, period = null) 
+  {
+    const fetchers = 
+    {
       'OrdersToDo': () => ServiceFactory.createOrdersToDoFetcher(this.appSheetService),
       'OrdersInProduct': () => ServiceFactory.createOrdersInProductFetcher(this.appSheetService),
       'ProductionStatus': () => ServiceFactory.createProductionStatusFetcher(this.appSheetService),
       'BoMFlags': () => ServiceFactory.createB0MFlagsFetcher(this.appSheetService)
     };
 
-    if (!fetchers[tableName]) {
+    if (!fetchers[tableName]) 
+    {
       throw new Error(`Неизвестная таблица: ${tableName}`);
     }
 
     const fetcher = fetchers[tableName]();
     let data;
 
-    if (tableName === 'OrdersToDo' && period) {
+    if (tableName === 'OrdersToDo' && period) 
+    {
       data = await fetcher.fetchByDateRange(period);
-    } else {
+    } 
+    else 
+    {
       // Для остальных таблиц загружаем все
-      data = await fetcher.fetchWithSelector(`Select(${tableName}[*])`);
+      data = await fetcher.fetchAll();
     }
 
     // Записываем
     const writeMethod = `write${tableName.replace(/ /g, '')}`;
-    if (this.writer[writeMethod]) {
+    if (this.writer[writeMethod]) 
+    {
       await this.writer[writeMethod](data);
       return { success: true, records: data.length };
-    } else {
+    } 
+    else 
+    {
       // Для таблиц без метода пишем в общий дамп
       const sheetName = `${tableName}_Dump`;
       await this.writer.sheetsService.writeSheet(sheetName, [], data);

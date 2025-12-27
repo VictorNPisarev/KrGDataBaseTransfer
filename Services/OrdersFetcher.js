@@ -44,6 +44,19 @@ class OrdersFetcher {
   }
   
   /**
+   * Получить данные по произвольному Selector
+   */
+  async fetchAll() {
+    console.log(`📥 Загрузка ${this.tableName} с Selector...`);
+    
+    const rawData = await this.appSheetService.findAll(
+      this.tableName
+    );
+    
+    return this.mapData(rawData);
+  }
+
+  /**
    * Преобразование данных с использованием стратегии
    */
   mapData(rawData) {

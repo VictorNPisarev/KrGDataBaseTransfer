@@ -11,22 +11,11 @@ class AppSheetService
   }
 
   /**
-   * Только метод Find - остальное не нужно
+   * Базовый метод для выполнения запросов Find
+   * @private
    */
-  async findOrdersByDateRange(tableName, dateField, startDate, endDate) 
+  async _executeFindRequest(tableName, payload) 
   {
-    const payload = 
-    {
-      "Action": "Find",
-      "Properties": 
-      {
-        "Locale": "ru-RU",
-        "Selector": "Select(" + tableName + "[Row ID], and([" + dateField + "] >= '" + this.formatDate(startDate, "GMT+3", "MM/dd/yyyy") + 
-                                            "', [" + dateField + "] <= '" + this.formatDate(endDate, "GMT+3", "MM/dd/yyyy") + "'))"
-      },
-      "Rows": []
-    };
-
     const url = `${this.baseUrl}/tables/${tableName}/Action`;
     const options = 
     {
@@ -37,16 +26,17 @@ class AppSheetService
     };
 
     const response = await UrlFetchApp.fetch(url, options);
-    
     const responseCode = response.getResponseCode();
     const responseText = response.getContentText();
 
-    console.log(`AppSheet API Response Code: ${responseCode}`);
+    console.log(`AppSheet API ${tableName} → Code: ${responseCode}, Length: ${responseText.length}`);
+
     console.log(`AppSheet API Response Text: ${responseText}`);
+
 
     if (responseCode !== 200) 
     {
-      throw new Error(`AppSheet API error: ${responseCode} - ${responseText}`);
+      throw new Error(`AppSheet API error: ${responseCode} - ${responseText.substring(0, 200)}`);
     }
 
     try 
@@ -55,15 +45,114 @@ class AppSheetService
     } 
     catch (error) 
     {
-      console.error('Failed to parse JSON:', error);
-      console.error('Response text that failed to parse:', responseText);
+      console.error('Failed to parse JSON:', error.message);
+      console.error('Response sample:', responseText.substring(0, 500));
       throw new Error('Invalid JSON response from AppSheet API');
     }
-
   }
 
-  formatDate(date) 
+  /**
+   * Поиск по диапазону дат (существующий метод)
+   */
+  async findOrdersByDateRange(tableName, dateField, startDate, endDate) 
   {
-    return Utilities.formatDate(date, "GMT+3", "MM-dd-yyyy");
+/*    const payload = 
+    {
+      "Action": "Find",
+      "Properties": 
+      {
+        "Locale": "ru-RU",
+        "Selector": `Select(${tableName}[*], and([${dateField}] >= '${this.formatDate(startDate, "MM/dd/yyyy")}', [${dateField}] <= '${this.formatDate(endDate, "MM/dd/yyyy")}'))`
+      },
+      "Rows": []
+    };
+*/
+    const payload = 
+    {
+      "Action": "Find",
+      "Properties": 
+      {
+        "Locale": "ru-RU",
+        "Selector": "Select(" + tableName + "[Row ID], and([" + dateField + "] >= '" + this.formatDate(startDate) + 
+                                            "', [" + dateField + "] <= '" + this.formatDate(endDate) + "'))"
+      },
+      "Rows": []
+    };
+
+    return await this._executeFindRequest(tableName, payload);
+  }
+
+  /**
+   * Новый метод: поиск по произвольному Selector
+   */
+  async findWithSelector(tableName, selector) 
+  {
+    const payload = 
+    {
+      "Action": "Find",
+      "Properties": 
+      {
+        "Locale": "ru-RU",
+        "Selector": selector
+      },
+      "Rows": []
+    };
+
+    return await this._executeFindRequest(tableName, payload);
+  }
+
+  /**
+   * Получить все записи таблицы (без фильтра)
+   */
+  async findAll(tableName) 
+  {
+    const payload = 
+    {
+      "Action": "Find",
+      "Properties": 
+      {
+        "Locale": "ru-RU"
+      },
+      "Rows": []
+    };
+
+    return await this._executeFindRequest(tableName, payload);
+  }
+
+  /**
+   * Поиск по ID (для связей между таблицами)
+   */
+  async findByIds(tableName, ids, idField = '_RowNumber', batchSize = 1000) 
+  {
+    if (!ids || ids.length === 0) return [];
+    
+    // AppSheet ограничивает оператор $in ~50 значениями
+    const batchSizeIds = 50;
+    const batches = [];
+    for (let i = 0; i < ids.length; i += batchSizeIds) 
+    {
+      batches.push(ids.slice(i, i + batchSizeIds));
+    }
+
+    let allResults = [];
+    
+    for (const batchIds of batches) 
+    {
+      const selector = `Select(${tableName}[*], [${idField}] in (${batchIds.map(id => `'${id}'`).join(', ')}))`;
+      const batchResults = await this.findWithSelector(tableName, selector, batchSize);
+      allResults = allResults.concat(batchResults);
+      
+      if (batches.length > 1) 
+      {
+        Utilities.sleep(100); // Пауза между запросами
+      }
+    }
+
+    return allResults;
+  }
+
+  formatDate(date, format = "MM/dd/yyyy") 
+  {
+    return Utilities.formatDate(date, "GMT+3", format);
   }
 }

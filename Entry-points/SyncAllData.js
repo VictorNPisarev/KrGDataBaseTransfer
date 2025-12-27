@@ -8,8 +8,26 @@ function syncAllAppSheetData()
 function syncOrdersToDo() 
 {
   const orchestrator = new DataSyncOrchestrator();
-  const period = { from: new Date('2024-01-01'), to: new Date() };
-  return orchestrator.syncTable('OrdersToDo', period);
+  const period = { from: new Date('2024-11-09'), to: new Date('2026-12-31') };
+  return orchestrator.syncTable('OrdersToDo');
+}
+
+function syncOrdersInProduct() 
+{
+  const orchestrator = new DataSyncOrchestrator();
+  return orchestrator.syncTable('OrdersInProduct');
+}
+
+function syncProductionStatus() 
+{
+  const orchestrator = new DataSyncOrchestrator();
+  return orchestrator.syncTable('ProductionStatus');
+}
+
+function syncBoMFlags() 
+{
+  const orchestrator = new DataSyncOrchestrator();
+  return orchestrator.syncTable('BoMFlags');
 }
 
 // Для ручного запуска из редактора GAS
