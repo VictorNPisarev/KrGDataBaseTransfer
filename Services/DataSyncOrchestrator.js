@@ -36,28 +36,28 @@ class DataSyncOrchestrator
 
       // 3. Загружаем данные параллельно
       const [ordersToDo, ordersInProduct, productionStatus, bomFlags] = await Promise.all([
-        todoFetcher.fetchByDateRange(period).catch(e => {
+        todoFetcher.fetchAll().catch(e => {
           console.error('Ошибка загрузки OrdersToDo:', e);
           results.errors.push({ table: 'OrdersToDo', error: e.message });
           return [];
         }),
         
         // Для OrdersInProduct используем специальный запрос
-        productFetcher.fetchWithSelector('Select(OrdersInProduct[*])').catch(e => {
+        productFetcher.fetchAll().catch(e => {
           console.error('Ошибка загрузки OrdersInProduct:', e);
           results.errors.push({ table: 'OrdersInProduct', error: e.message });
           return [];
         }),
         
         // Все статусы
-        statusFetcher.fetchWithSelector('Select(ProductionStatus[*])').catch(e => {
+        statusFetcher.fetchAll().catch(e => {
           console.error('Ошибка загрузки ProductionStatus:', e);
           results.errors.push({ table: 'ProductionStatus', error: e.message });
           return [];
         }),
         
         // Все флаги BOM
-        bomFetcher.fetchWithSelector('Select(BoMFlags[*])').catch(e => {
+        bomFetcher.fetchAll().catch(e => {
           console.error('Ошибка загрузки BoMFlags:', e);
           results.errors.push({ table: 'BoMFlags', error: e.message });
           return [];
@@ -69,7 +69,7 @@ class DataSyncOrchestrator
         ordersToDo,
         ordersInProduct,
         productionStatus,
-        bomFlags: bomFlags // сырые данные, так как нет стратегии
+        bomFlags
       });
 
       // 5. Формируем отчет

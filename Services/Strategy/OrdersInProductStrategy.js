@@ -8,8 +8,8 @@ class OrdersInProductStrategy extends DataMappingStrategy
         productionStatusId: relation[fieldMappings.ProductionStatusId],
         changeDate: relation[fieldMappings.ProductionStatusChangeDate],
         comment: relation[fieldMappings.Comment],
-        lumber: this.parseBoolean(relation[fieldMappings.Lumber]),
-        glazingBead: this.parseBoolean(relation[fieldMappings.GlazingBead]),
+        lumber: relation[fieldMappings.Lumber],
+        glazingBead: relation[fieldMappings.GlazingBead],
         twoSidePaint: this.parseBoolean(relation[fieldMappings.TwoSidePaint])
     }));
   }
