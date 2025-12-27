@@ -9,9 +9,9 @@ class Constants
     };
   }
 
+  //Поля в OrdersToDo
   static get OrdersToDo_MAPPINGS() 
   {
-    //OrdersToDo
     return {
       // Поля в AppSheet
       RowID: 'Row ID',
@@ -28,17 +28,50 @@ class Constants
 
   }
 
+  //Поля в OrdersInProduct
   static get OrdersInProduct_MAPPINGS() 
   {
-    //OrdersInProduct
     return {
       // Поля в AppSheet
       RowID: 'Row ID',
       OrdersToDoId: 'OrdersToDoId',
       ProductionStatusId: 'ProductionStatusId',
-      ProductionStatusChangeDate: 'Дата изменения этапа'
+      ProductionStatusChangeDate: 'Дата изменения этапа',
+      Comment: 'Примечания',
+      Lumber: 'Брус',
+      GlazingBead: 'Штапик',
+      TwoSidePaint: 'Двухстор. покраска'
     };
+  }
 
+  //Поля в ProductionStatus
+  static get ProductionStatus_MAPPINGS() 
+  {
+    return {
+      // Поля в AppSheet
+      RowID: 'Row ID',
+      Status: 'Status',
+      PreviousWorkPlace: 'PreviousWorkPlace',
+      IsWorkPlace: 'IsWorkPlace'
+    };
+  }
+
+  //Поля в BoMFlags
+  static get BoMFlags_MAPPINGS() 
+  {
+    return {
+      // Поля в AppSheet
+      RowID: 'Row ID',
+      Order: '№ Заказа',
+      OrdersToDoId: 'OrdersToDoId',
+      Furniture: 'Фурнитура',
+      Glass: 'Стеклопакеты',
+      Paint: 'ЛКМ',
+      AlumWaterShield: 'ППС, В/О',
+      Lumber: 'Брус',
+      WoodAlum: 'Дер-алюм',
+      Comment: 'Примечание'
+    };
   }
 
   static get SCRIPT_PROPERTIES() 
@@ -48,7 +81,9 @@ class Constants
       APPSHEET_APP_ID: props.getProperty('APPSHEET_APP_ID'),
       APPSHEET_API_KEY: props.getProperty('APPSHEET_API_KEY'),
       APPSHEET_MAIN_TABLE_NAME: props.getProperty('APPSHEET_MAIN_TABLE_NAME'),
-      APPSHEET_PRODUCTION_TABLE_NAME: props.getProperty('APPSHEET_PRODUCTION_TABLE_NAME')
+      APPSHEET_PRODUCTION_TABLE_NAME: props.getProperty('APPSHEET_PRODUCTION_TABLE_NAME'),
+      APPSHEET_PRODUCTIONSTATUS_TABLE_NAME: props.getProperty('APPSHEET_PRODUCTIONSTATUS_TABLE_NAME'),
+      APPSHEET_BOMFLAGS_TABLE_NAME: props.getProperty('APPSHEET_BOMFLAGS_TABLE_NAME')
     };
   }
 }
