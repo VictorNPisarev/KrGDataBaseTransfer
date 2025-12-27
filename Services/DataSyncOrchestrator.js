@@ -72,17 +72,48 @@ class DataSyncOrchestrator
         bomFlags
       });
 
-      // 5. Формируем отчет
-      results.tables = {
-        ordersToDo: { records: ordersToDo.length, written: !!writeResults.ordersToDo },
-        ordersInProduct: { records: ordersInProduct.length, written: !!writeResults.ordersInProduct },
-        productionStatus: { records: productionStatus.length, written: !!writeResults.productionStatus },
-        bomFlags: { records: bomFlags.length, written: !!writeResults.bomFlags }
+      // 5. Формируем отчет (оставляем как есть)
+      const results = 
+      {
+        timestamp: new Date(),
+        tables: 
+        {
+          ordersToDo: 
+          { 
+            records: ordersToDo ? ordersToDo.length : 0, 
+            written: !!writeResults.ordersToDo 
+          },
+          ordersInProduct: 
+          { 
+            records: ordersInProduct ? ordersInProduct.length : 0, 
+            written: !!writeResults.ordersInProduct 
+          },
+          productionStatus: 
+          { 
+            records: productionStatus ? productionStatus.length : 0, 
+            written: !!writeResults.productionStatus 
+          },
+          bomFlags: 
+          { 
+            records: bomFlags ? bomFlags.length : 0, 
+            written: !!writeResults.bomFlags 
+          }
+        },
+        writeResults: writeResults,
+        success: true
       };
+      
+      // Добавляем общее количество записей
+      results.totalRecords = Object.values(results.tables)
+        .reduce((sum, table) => sum + (table.records || 0), 0);
+      
+      Logger.log(`Синхронизация завершена. Обработано записей: ${results.totalRecords}`);
+      
+      return results;
 
-      console.log('✅ Синхронизация завершена:', results);
-
-    } catch (error) {
+    } 
+    catch (error)
+    {
       console.error('❌ Критическая ошибка синхронизации:', error);
       results.success = false;
       results.errors.push({ table: 'SYSTEM', error: error.message });

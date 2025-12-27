@@ -125,7 +125,7 @@ function debugAppSheet() {
   if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) 
   {
     console.log('⚠️ Использую тестовый период (даты из таблицы невалидны или отсутствуют)');
-    startDate = new Date(2025, 09, 24); // 1 декабря 2025
+    startDate = new Date(2025, 9, 24); // 1 декабря 2025
     endDate = new Date(2025, 11, 24); // 31 декабря 2025
   }
 
